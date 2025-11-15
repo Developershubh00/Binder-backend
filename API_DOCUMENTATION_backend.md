@@ -1603,6 +1603,66 @@ const refreshToken = async () => {
 
 7. **Auto-Deploy**: Both platforms support auto-deployment on git push to main branch
 
+### Troubleshooting Deployment Issues
+
+#### Error: `ModuleNotFoundError: No module named 'app'`
+
+**Problem**: Render is trying to run `gunicorn app:app` instead of the correct Django WSGI command.
+
+**Solution**:
+1. **Check Render Dashboard Settings**:
+   - Go to your Render service dashboard
+   - Navigate to "Settings" → "Build & Deploy"
+   - Find the "Start Command" field
+   - Ensure it's set to: `gunicorn binder_config.wsgi:application`
+   - NOT: `gunicorn app:app` (this is for Flask apps, not Django)
+
+2. **Using render.yaml**:
+   - If you have a `render.yaml` file in your repo root, ensure it contains:
+     ```yaml
+     services:
+       - type: web
+         name: binder-backend
+         startCommand: gunicorn binder_config.wsgi:application
+     ```
+   - Render should automatically detect and use this file
+
+3. **Using Procfile**:
+   - A `Procfile` has been created in the repo root with:
+     ```
+     web: gunicorn binder_config.wsgi:application
+     ```
+   - Render will automatically detect and use the Procfile if present
+
+4. **Manual Override**:
+   - If the service was created manually, update the Start Command in Render dashboard
+   - Save changes and redeploy
+
+**Correct Start Command for Django**:
+```bash
+gunicorn binder_config.wsgi:application
+```
+
+**Where**:
+- `binder_config` = Your Django project name (the folder containing `settings.py`)
+- `wsgi` = The WSGI module file (`wsgi.py`)
+- `application` = The WSGI application variable name (defined in `wsgi.py`)
+
+#### Other Common Issues
+
+**Database Connection Errors**:
+- Ensure `DATABASE_URL` environment variable is set correctly
+- Check that PostgreSQL database is created and running
+- Verify database credentials in Render dashboard
+
+**Static Files Not Loading**:
+- Ensure `python manage.py collectstatic --noinput` is in your build command
+- Check that WhiteNoise middleware is enabled in `settings.py`
+
+**CORS Errors**:
+- Verify `CORS_ALLOWED_ORIGINS` includes your frontend URL
+- Check that `CORS_ALLOWED_ORIGINS` is set in Render environment variables
+
 ---
 
 ## Available Roles
