@@ -1,0 +1,46 @@
+# Core Django
+Django==5.0.1
+djangorestframework==3.14.0
+django-cors-headers==4.3.1
+
+# Database
+psycopg2-binary==2.9.9
+dj-database-url==2.1.0
+
+# Authentication & Security
+djangorestframework-simplejwt==5.3.1
+PyJWT==2.8.0
+
+# Google Sheets Integration
+google-auth==2.26.2
+google-auth-oauthlib==1.2.0
+google-auth-httplib2==0.2.0
+google-api-python-client==2.115.0
+gspread==5.12.3
+
+# Email
+django-ses==3.5.2
+
+# API Documentation
+drf-yasg==1.21.7
+
+# Environment Variables
+python-dotenv==1.0.0
+
+# Utilities
+pytz==2023.3.post1
+
+# Production
+gunicorn==21.2.0
+whitenoise==6.6.0
+
+# Monitoring & Logging
+sentry-sdk==1.39.2
+
+# OTP (Twilio/Wati - commented for future use)
+# twilio==8.11.1
+# requests==2.31.0
+
+# Testing (optional)
+# pytest==7.4.3
+# pytest-django==4.7.0

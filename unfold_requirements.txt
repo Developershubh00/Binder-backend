@@ -1,0 +1,2 @@
+# Unfold Admin UI
+django-unfold>=0.30.0

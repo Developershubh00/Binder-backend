@@ -1,0 +1,46 @@
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from .models import User, Tenant, Permission, RolePermission, LoginHistory
+
+@admin.register(User)
+class UserAdmin(BaseUserAdmin):
+    list_display = ['email', 'first_name', 'last_name', 'role', 'tenant', 'is_active', 'email_verified']
+    list_filter = ['role', 'is_active', 'email_verified', 'tenant']
+    search_fields = ['email', 'first_name', 'last_name']
+    ordering = ['-created_at']
+    
+    fieldsets = (
+        (None, {'fields': ('email', 'password')}),
+        ('Personal Info', {'fields': ('first_name', 'last_name', 'phone')}),
+        ('Role & Access', {'fields': ('role', 'designation', 'tenant')}),
+        ('Status', {'fields': ('is_active', 'is_staff', 'is_superuser', 'email_verified')}),
+        ('Timestamps', {'fields': ('date_joined', 'last_login')}),
+    )
+    
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'password1', 'password2', 'role', 'tenant'),
+        }),
+    )
+
+@admin.register(Tenant)
+class TenantAdmin(admin.ModelAdmin):
+    list_display = ['company_name', 'company_email', 'current_user_count', 'user_limit', 'is_active']
+    search_fields = ['company_name', 'company_email']
+    list_filter = ['is_active']
+
+@admin.register(Permission)
+class PermissionAdmin(admin.ModelAdmin):
+    list_display = ['category', 'action', 'resource']
+    list_filter = ['category', 'action']
+
+@admin.register(RolePermission)
+class RolePermissionAdmin(admin.ModelAdmin):
+    list_display = ['user', 'permission', 'is_enabled']
+    list_filter = ['is_enabled']
+
+@admin.register(LoginHistory)
+class LoginHistoryAdmin(admin.ModelAdmin):
+    list_display = ['user', 'ip_address', 'login_successful', 'login_at']
+    list_filter = ['login_successful', 'login_at']
