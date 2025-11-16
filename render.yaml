@@ -4,6 +4,7 @@ services:
     env: python
     plan: starter
     buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    preDeployCommand: python manage.py migrate
     startCommand: gunicorn binder_config.wsgi:application
     envVars:
       - key: PYTHON_VERSION
@@ -19,7 +20,7 @@ services:
       - key: ALLOWED_HOSTS
         value: binder-backend.onrender.com
       - key: CORS_ALLOWED_ORIGINS
-        value: https://your-frontend-domain.com
+        value: https://binder-frontend-self.vercel.app
       - key: EMAIL_BACKEND
         value: django.core.mail.backends.smtp.EmailBackend
       - key: EMAIL_HOST

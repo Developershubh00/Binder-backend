@@ -94,15 +94,23 @@ WSGI_APPLICATION = 'binder_config.wsgi.application'
 
 import dj_database_url
 
-if os.getenv('DATABASE_URL'):
+# Database selection strategy:
+# 1) If DATABASE_URL is set (Render/production), use it.
+# 2) Else if DB_ENGINE=postgres or DB_HOST is set, use Postgres with provided env vars.
+# 3) Else default to SQLite for local development (zero-setup).
+database_url = os.getenv('DATABASE_URL')
+db_engine_env = os.getenv('DB_ENGINE', '').lower()
+db_host_env = os.getenv('DB_HOST', '').strip()
+
+if database_url:
     DATABASES = {
         'default': dj_database_url.config(
-            default=os.getenv('DATABASE_URL'),
+            default=database_url,
             conn_max_age=600,
             conn_health_checks=True,
         )
     }
-else:
+elif db_engine_env == 'postgres' or db_host_env:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -111,6 +119,13 @@ else:
             'PASSWORD': os.getenv('DB_PASSWORD', 'password'),
             'HOST': os.getenv('DB_HOST', 'localhost'),
             'PORT': os.getenv('DB_PORT', '5432'),
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / os.getenv('DB_NAME', 'db.sqlite3'),
         }
     }
 

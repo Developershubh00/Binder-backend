@@ -17,11 +17,15 @@ source venv/bin/activate
 echo "📥 Installing dependencies..."
 pip install -r requirements.txt
 
-# Check if .env exists
+# Ensure .env exists, create from template if missing
 if [ ! -f ".env" ]; then
-    echo "⚠️  .env file not found. Please create one from .env.example"
-    echo "   cp .env.example .env"
-    exit 1
+    if [ -f ".env.example" ]; then
+        echo "🧪 Creating .env from .env.example..."
+        cp .env.example .env
+    else
+        echo "⚠️  .env file not found and .env.example missing."
+        echo "   Proceeding with built-in defaults (SQLite, DEBUG=True)."
+    fi
 fi
 
 # Run migrations

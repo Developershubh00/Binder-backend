@@ -27,6 +27,9 @@ drf-yasg==1.21.7
 # Environment Variables
 python-dotenv==1.0.0
 
+# Admin UI
+django-unfold>=0.30.0
+
 # Utilities
 pytz==2023.3.post1
 
