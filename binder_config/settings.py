@@ -110,6 +110,14 @@ if database_url:
             conn_health_checks=True,
         )
     }
+elif db_engine_env == 'postgresql':
+    DATABASES = {
+    'default': dj_database_url.config(
+        default=os.getenv('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=True
+    )
+}
 elif db_engine_env == 'postgres' or db_host_env:
     DATABASES = {
         'default': {
