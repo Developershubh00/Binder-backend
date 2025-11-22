@@ -95,7 +95,7 @@ import dj_database_url
 # 1) If DATABASE_URL is set (Render/production), use it.
 # 2) Else if DB_ENGINE=postgres or DB_HOST is set, use Postgres with provided env vars.
 # 3) Else default to SQLite for local development (zero-setup).
-database_url = os.getenv('DATABASE_URL')
+database_url = os.getenv('DATABASE_URL',default=None)
 db_engine_env = os.getenv('DB_ENGINE', '').lower()
 db_host_env = os.getenv('DB_HOST', '').strip()
 
