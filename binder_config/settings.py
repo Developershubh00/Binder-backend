@@ -21,10 +21,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-dev-key-change-in-producti
 DEBUG = True
 
 # Allow all hosts in production (Render will set this)
-ALLOWED_HOSTS = ['127.0.0.1']
-# Add Render host automatically if RENDER_EXTERNAL_HOSTNAME is set
-if os.getenv('RENDER_EXTERNAL_HOSTNAME'):
-    ALLOWED_HOSTS.append(os.getenv('RENDER_EXTERNAL_HOSTNAME'))
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,binder-frontend-self.vercel.app').split(',')
 
 
 # Application definition
@@ -241,7 +238,7 @@ SIMPLE_JWT = {
 # CORS Configuration
 CORS_ALLOWED_ORIGINS = os.getenv(
     'CORS_ALLOWED_ORIGINS',
-    'http://localhost:5173,http://localhost:3000'
+    'http://localhost:5173,http://localhost:3000,https://binder-frontend-self.vercel.app'
 ).split(',')
 # Allow all origins in development if DEBUG is True
 if DEBUG:
@@ -368,8 +365,11 @@ if not DEBUG:
     X_FRAME_OPTIONS = 'DENY'
     # CSRF trusted origins for Render
     CSRF_TRUSTED_ORIGINS = [
-        'https://' + host for host in ALLOWED_HOSTS if host != '*'
-    ]
+    'https://' + host for host in ALLOWED_HOSTS if host != '*'
+] + [
+    'https://binder-frontend-self.vercel.app',
+    'http://localhost:5173',
+]
 
 
 # Swagger/OpenAPI Configuration
