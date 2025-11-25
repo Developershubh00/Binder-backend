@@ -129,11 +129,13 @@ class LoginView(generics.GenericAPIView):
     serializer_class = LoginSerializer
     
     def post(self, request):
+        print( "LoginView POST called" )
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        print("serializer.validated_data")
         
         user = serializer.validated_data['user']
-        
+        print(user)
         # Update last login
         user.last_login = timezone.now()
         user.save()

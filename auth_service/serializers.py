@@ -115,11 +115,15 @@ class LoginSerializer(serializers.Serializer):
         password = attrs.get('password')
         
         if email and password:
+            print("Authenticating user...")
+            print(f"Email: {email}")
+            print(f"Password: {password}")
             user = authenticate(
                 request=self.context.get('request'),
                 username=email,
                 password=password
             )
+            print(f"Authenticated user: {user}")
             
             if not user:
                 raise serializers.ValidationError(
