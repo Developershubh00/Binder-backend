@@ -21,7 +21,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-dev-key-change-in-producti
 DEBUG = True
 
 # Allow all hosts in production (Render will set this)
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,binder-frontend-self.vercel.app').split(',')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,binder-backend-1.onrender.com,binder-frontend-self.vercel.app').split(',')
 
 
 # Application definition
@@ -99,35 +99,42 @@ database_url = os.getenv('DATABASE_URL',default=None)
 db_engine_env = os.getenv('DB_ENGINE', '').lower()
 db_host_env = os.getenv('DB_HOST', '').strip()
 
-if database_url:
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=database_url,
-            conn_max_age=600,
-            conn_health_checks=True,
-        )
-    }
-elif db_engine_env == 'postgresql':
-    DATABASES = {
-    'default': dj_database_url.config(
-        default=os.getenv('DATABASE_URL'),
-        conn_max_age=600,
-        ssl_require=True
-    )
-}
-elif db_engine_env == 'postgres' or db_host_env:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('DB_NAME', 'binder_db'),
-            'USER': os.getenv('DB_USER', 'postgres'),
-            'PASSWORD': os.getenv('DB_PASSWORD', 'password'),
-            'HOST': os.getenv('DB_HOST', 'localhost'),
-            'PORT': os.getenv('DB_PORT', '5432'),
-        }
-    }
-else:
-    DATABASES = {
+# if database_url:
+#     DATABASES = {
+#         'default': dj_database_url.config(
+#             default=database_url,
+#             conn_max_age=600,
+#             conn_health_checks=True,
+#         )
+#     }
+# elif db_engine_env == 'postgresql':
+#     DATABASES = {
+#     'default': dj_database_url.config(
+#         default=os.getenv('DATABASE_URL'),
+#         conn_max_age=600,
+#         ssl_require=True
+#     )
+# }
+# elif db_engine_env == 'postgres' or db_host_env:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql',
+#             'NAME': os.getenv('DB_NAME', 'binder_db'),
+#             'USER': os.getenv('DB_USER', 'postgres'),
+#             'PASSWORD': os.getenv('DB_PASSWORD', 'password'),
+#             'HOST': os.getenv('DB_HOST', 'localhost'),
+#             'PORT': os.getenv('DB_PORT', '5432'),
+#         }
+#     }
+# else:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': BASE_DIR / os.getenv('DB_NAME', 'db.sqlite3'),
+#         }
+#     }
+
+DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / os.getenv('DB_NAME', 'db.sqlite3'),
