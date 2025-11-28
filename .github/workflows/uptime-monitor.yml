@@ -1,0 +1,31 @@
+name: Uptime Monitor
+
+on:
+  schedule:
+    # Runs every 14 minutes
+    - cron: '*/10 * * * *'
+  workflow_dispatch: # Manual trigger
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Binder Backend
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" https://binder-backend-1.onrender.com/api/health/)
+          if [ $response -eq 200 ]; then
+            echo "✓ Service is healthy (Status: $response)"
+          else
+            echo "✗ Service returned status: $response"
+            exit 1
+          fi
+      
+      - name: Notify on Failure
+        if: failure()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          text: '🚨 Binder Backend is DOWN!'
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
