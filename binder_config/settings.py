@@ -21,7 +21,13 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-dev-key-change-in-producti
 DEBUG = True
 
 # Allow all hosts in production (Render will set this)
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,binder-backend-0szj.onrender.com,binder-frontend-self.vercel.app').split(',')
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'binder-backend-0szj.onrender.com',
+    '.onrender.com',  # Allows any Render subdomain
+    'binder-frontend-self.vercel.app',
+]
 
 
 # Application definition
@@ -245,10 +251,9 @@ SIMPLE_JWT = {
 
 
 # CORS Configuration
-CORS_ALLOWED_ORIGINS = os.getenv(
-    'CORS_ALLOWED_ORIGINS',
-    'http://localhost:5173,http://localhost:3000,https://binder-frontend-self.vercel.app'
-).split(',')
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8000',
+    'http://localhost:5173,http://localhost:3000,https://binder-frontend-self.vercel.app']
 # Allow all origins in development if DEBUG is True
 if DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
