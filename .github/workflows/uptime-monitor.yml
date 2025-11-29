@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Ping Binder Backend
         run: |
-          response=$(curl -s -o /dev/null -w "%{http_code}" https://binder-backend-1.onrender.com/api/health/)
+          response=$(curl -s -o /dev/null -w "%{http_code}" https://binder-backend-0szj.onrender.com/api/health/)
           if [ $response -eq 200 ]; then
             echo "✓ Service is healthy (Status: $response)"
           else

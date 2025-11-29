@@ -21,7 +21,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-dev-key-change-in-producti
 DEBUG = True
 
 # Allow all hosts in production (Render will set this)
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,binder-backend-1.onrender.com,binder-frontend-self.vercel.app').split(',')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,binder-backend-0szj.onrender.com,binder-frontend-self.vercel.app').split(',')
 
 
 # Application definition
